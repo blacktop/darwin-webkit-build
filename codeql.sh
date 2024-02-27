@@ -42,11 +42,11 @@ This script creates the WebKit CodeQL database
 fi
 
 # Functions
-install_deps() {
-    if [ ! -x "$(command -v jq)" ] || [ ! -x "$(command -v gum)" ] || [ ! -x "$(command -v cmake)" ] || [ ! -x "$(command -v ninja)" ]; then
+function install_deps() {
+    if [ ! -x "$(command -v codeql)" ] || [ ! -x "$(command -v jq)" ] || [ ! -x "$(command -v gum)" ] || [ ! -x "$(command -v cmake)" ] || [ ! -x "$(command -v ninja)" ]; then
         running "Installing dependencies"
         if [ ! -x "$(command -v brew)" ]; then
-            error "Please install homebrew - https://brew.sh (or install 'jq', 'gum', 'cmake' and 'ninja' manually)"
+            error "Please install homebrew - https://brew.sh (or install 'codeql', 'jq', 'gum', 'cmake' and 'ninja' manually)"
             read -p "Install homebrew now? " -n 1 -r
             echo # (optional) move to a new line
             if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -56,8 +56,24 @@ install_deps() {
                 exit 1
             fi
         fi
-        brew install jq gum bash cmake ninja
+        brew install codeql jq gum bash cmake ninja
     fi
+}
+
+function get_version() {
+    local version=$1
+    while read -r tag; do
+        if [[ "${tag}" == "${version}" ]]; then
+            running "✅ Exact tag: $tag"
+            WEBKIT_VERSION=$tag
+            return
+        # Check if the tag is less than the given version
+        elif [[ "$(printf '%s\n' "$tag" "${version}" | sort -V | head -n1)" != "${version}" ]]; then
+            running "⚠️ Closest tag: $tag"
+            WEBKIT_VERSION=$tag
+            return
+        fi
+    done < <(git ls-remote --tags https://github.com/WebKit/WebKit.git WebKit-7617\* | grep -Eo 'WebKit-[0-9.]+$' | sort -Vr )
 }
 
 function clone_webkit() {
@@ -73,18 +89,15 @@ function clone_webkit() {
             exit 1
             ;;
         esac
-        WEBKIT_VERSION=$(curl -s $RELEASE_URL | jq -r '.projects[] | select(.project=="WebKit") | .tag')
+        # Parse the latest WebKit version from the release.json and lookup in the WebKit tags
+        local version
+        version=$(curl -s $RELEASE_URL | jq -r '.projects[] | select(.project=="WebKit") | .tag')
+        info "Using version: $version"
+        get_version "$version"
     fi
     if [ ! -d "${WORK_DIR}/WebKit" ]; then
         running "⬇️ Cloning WebKit"
         git clone --depth 1 --branch "${WEBKIT_VERSION}" https://github.com/WebKit/WebKit.git "${WORK_DIR}/WebKit"
-    fi
-}
-
-function install_codeql() {
-    if ! [ -x "$(command -v codeql)" ]; then
-        running "Installing CodeQL..."
-        brew install codeql
     fi
 }
 
@@ -102,7 +115,7 @@ function create_db() {
 }
 
 main() {
-    install_codeql
+    install_deps
     clone_webkit
     create_db
     echo "  🎉 CodeQL Database Create Done!"
