@@ -27,7 +27,7 @@
 - [codeql CLI](https://codeql.github.com/docs/codeql-cli/)
 
 > [!NOTE]
-> The `build.sh` script will install all these for you if you are connected to the internet.
+> The `codeql.sh` script will install all these for you if you are connected to the internet.
 
 ### Generate a CodeQL database
 
