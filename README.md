@@ -33,7 +33,7 @@ The **macOS** `14.3` and **iOS** `17.3` builds are currently failing due to an e
 <details>
   <summary><i>View Error Log</i></summary>
 
-```log
+```cpp
 [2024-02-27 09:47:16] [build-stdout] darwin-webkit-build/WebKit/Source/WTF/wtf/posix/ThreadingPOSIX.cpp:337:35: error: expected ';' after expression
 [2024-02-27 09:47:16] [build-stdout]     UNUSED_PARAM(schedulingPolicy)
 [2024-02-27 09:47:16] [build-stdout]                                   ^
