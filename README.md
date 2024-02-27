@@ -8,6 +8,14 @@
 
 ## Supported OS Versions
 
+### macOS
+
+| Version  | Compiles | CodeQL | Binary |
+| -------- | :------: | :----: | :----: |
+| iOS 14.3 |    ❌    |   ❌    |   ❌   |
+
+### iOS
+
 | Version  | Compiles | CodeQL | Binary |
 | -------- | :------: | :----: | :----: |
 | iOS 17.3 |    ❌    |   ❌    |   ❌   |
@@ -17,14 +25,13 @@
 ### Dependencies
 
 - [homebrew](https://brew.sh)
+  - [codeql CLI](https://codeql.github.com/docs/codeql-cli/)
   - [jq](https://stedolan.github.io/jq/)
   - [gum](https://github.com/charmbracelet/gum)
-  - [ipsw](https://github.com/blacktop/ipsw)
   - [cmake](https://cmake.org)
   - [ninja](https://ninja-build.org)
 - XCode
 - python3
-- [codeql CLI](https://codeql.github.com/docs/codeql-cli/)
 
 > [!NOTE]
 > The `codeql.sh` script will install all these for you if you are connected to the internet.
