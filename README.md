@@ -8,6 +8,12 @@
 
 ## Supported OS Versions
 
+### `nightly`
+
+| Version  | Compiles | CodeQL | Binary |
+| -------- | :------: | :----: | :----: |
+| `main` |    ❌    |   ❌    |   ❌   |
+
 ### macOS
 
 | Version  | Compiles | CodeQL | Binary |
