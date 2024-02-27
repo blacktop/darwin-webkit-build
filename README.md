@@ -12,7 +12,7 @@
 
 | Version | Compiles | CodeQL | Binary |
 | ------- | :------: | :----: | :----: |
-| `main`  |    ❌     |   ❌    |   ❌    |
+| `main`  |    ❌     |   [❌](https://github.com/blacktop/darwin-webkit-build/releases/download/nightly/webkit-codeql.zip)    |   ❌    |
 
 ### macOS
 
