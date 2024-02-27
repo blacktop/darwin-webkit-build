@@ -1,4 +1,4 @@
-# 🚧 darwin-webkit-build
+# darwin-webkit-build
 
 [![WebKit CodeQL](https://github.com/blacktop/darwin-webkit-build/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/blacktop/darwin-webkit-build/actions/workflows/c-cpp.yml) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/blacktop/darwin-webkit-build/total)
  [![LICENSE](https://img.shields.io/:license-mit-blue.svg)](https://doge.mit-license.org)
@@ -12,7 +12,7 @@
 
 | Version | Compiles | CodeQL | Binary |
 | ------- | :------: | :----: | :----: |
-| `main`  |    ❌     |   [❌](https://github.com/blacktop/darwin-webkit-build/releases/download/nightly/webkit-codeql.zip)    |   ❌    |
+| `main`  |    ✅     |   [DB](https://github.com/blacktop/darwin-webkit-build/releases/download/nightly/webkit-codeql.zip)    |   ❌    |
 
 ### macOS
 
