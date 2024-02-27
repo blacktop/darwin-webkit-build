@@ -33,10 +33,11 @@ jobs:
           echo "$(shasum -a 256 webkit-codeql.zip)"
           shasum -a 256 webkit-codeql.zip > webkit-codeql.zip.sha256
 
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: webkit-codeql-${{ matrix.ios-version }}
-      #     path: webkit-codeql.zip
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: webkit-codeql-${{ matrix.ios-version }}
+          path: webkit-codeql.zip
 
       - name: Release
         env:
