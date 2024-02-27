@@ -1,0 +1,35 @@
+name: WebKit CodeQL (nightly)
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore: [ "*.md" ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-13
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Deps
+        run: |
+          sudo xcode-select -s /Applications/Xcode_15.2.app
+
+      - name: Build WebKit CodeQL Database
+        run: |
+          WEBKIT_VERSION=latest bash -x codeql.sh
+          echo "$(shasum -a 256 webkit-codeql.zip)"
+          shasum -a 256 webkit-codeql.zip > webkit-codeql.zip.sha256
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ls -lah
+          gh release upload nightly --clobber webkit-codeql.zip
+          gh release upload nightly --clobber webkit-codeql.zip.sha256

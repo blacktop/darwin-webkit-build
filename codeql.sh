@@ -128,7 +128,11 @@ function clone_webkit() {
     fi
     if [ ! -d "${WORK_DIR}/WebKit" ]; then
         running "⬇️  Cloning WebKit"
-        git clone --depth 1 --branch "${WEBKIT_VERSION}" https://github.com/WebKit/WebKit.git "${WORK_DIR}/WebKit"
+        if [[ "${WEBKIT_VERSION}" == "latest" ]]; then
+            git clone --depth 1 https://github.com/WebKit/WebKit.git "${WORK_DIR}/WebKit"
+        else
+            git clone --depth 1 --branch "${WEBKIT_VERSION}" https://github.com/WebKit/WebKit.git "${WORK_DIR}/WebKit"
+        fi
     fi
 }
 
