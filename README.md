@@ -24,7 +24,33 @@
 
 | Version | Compiles | CodeQL | Binary |
 | ------- | :------: | :----: | :----: |
-| 17.3    |    ❌     |   ❌    |   ❌    |
+| 17.3    |    ❌    |   ❌   |   ❌    |
+
+### Known Issues ⚠️
+
+The **macOS** `14.3` and **iOS** `17.3` builds are currently failing due to an error when compiling:
+
+```log
+[2024-02-27 09:47:16] [build-stdout] darwin-webkit-build/WebKit/Source/WTF/wtf/posix/ThreadingPOSIX.cpp:337:35: error: expected ';' after expression
+[2024-02-27 09:47:16] [build-stdout]     UNUSED_PARAM(schedulingPolicy)
+[2024-02-27 09:47:16] [build-stdout]                                   ^
+[2024-02-27 09:47:16] [build-stdout]                                   ;
+[2024-02-27 09:47:16] [build-stdout] 1 error generated.
+[2024-02-27 09:47:16] [build-stdout] [7/1213] Building CXX object Tools/TestWebKitAPI/CMakeFiles/TestWTF.dir/Tests/WTF/BloomFilter.cpp.o
+[2024-02-27 09:47:16] [build-stdout] [8/1213] Building CXX object Tools/TestWebKitAPI/CMakeFiles/TestWTF.dir/Tests/WTF/CompactUniquePtrTuple.cpp.o
+[2024-02-27 09:47:16] [build-stdout] [9/1213] Building CXX object Tools/TestWebKitAPI/CMakeFiles/TestWTF.dir/Tests/WTF/CompactRefPtrTuple.cpp.o
+[2024-02-27 09:47:16] [build-stdout] [10/1213] Building CXX object Tools/TestWebKitAPI/CMakeFiles/TestWTF.dir/Tests/WTF/CheckedArithmeticOperations.cpp.o
+[2024-02-27 09:47:17] [build-stdout] [11/1213] Building CXX object Tools/TestWebKitAPI/CMakeFiles/TestWTF.dir/Tests/WTF/CompactRefPtr.cpp.o
+[2024-02-27 09:47:17] [build-stdout] [12/1213] Building CXX object Tools/TestWebKitAPI/CMakeFiles/TestWTF.dir/Tests/WTF/CompactPtr.cpp.o
+[2024-02-27 09:47:17] [build-stdout] [13/1213] Building CXX object Tools/TestWebKitAPI/CMakeFiles/TestWTF.dir/Tests/WTF/CompletionHandlerTests.cpp.o
+[2024-02-27 09:47:23] [build-stdout] [14/1213] Building CXX object Tools/TestWebKitAPI/CMakeFiles/TestWTF.dir/Tests/WTF/DataMutex.cpp.o
+[2024-02-27 09:47:23] [build-stdout] [15/1213] Building CXX object Tools/TestWebKitAPI/CMakeFiles/TestWTF.dir/Tests/WTF/CrossThreadTask.cpp.o
+[2024-02-27 09:47:23] [build-stdout] [16/1213] Building CXX object Tools/TestWebKitAPI/CMakeFiles/TestWTF.dir/Tests/WTF/Condition.cpp.o
+[2024-02-27 09:47:24] [build-stdout] [17/1213] Building CXX object Tools/TestWebKitAPI/CMakeFiles/TestWTF.dir/Tests/WTF/CrossThreadCopierTests.cpp.o
+[2024-02-27 09:47:24] [build-stdout] ninja: build stopped: subcommand failed.
+[2024-02-27 09:47:24] [ERROR] Spawned process exited abnormally (code 1; tried to run: [/opt/homebrew/Caskroom/codeql/2.16.3/codeql/tools/osx64/preload_tracer, ./Tools/Scripts/build-webkit, --jsc-only, --debug])
+A fatal error occurred: Exit status 1 from command: [./Tools/Scripts/build-webkit, --jsc-only, --debug]
+```
 
 ## Getting Started
 
