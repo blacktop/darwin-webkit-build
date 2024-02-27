@@ -30,6 +30,9 @@
 
 The **macOS** `14.3` and **iOS** `17.3` builds are currently failing due to an error when compiling:
 
+<details>
+  <summary><i>View Error Log</i></summary>
+
 ```log
 [2024-02-27 09:47:16] [build-stdout] darwin-webkit-build/WebKit/Source/WTF/wtf/posix/ThreadingPOSIX.cpp:337:35: error: expected ';' after expression
 [2024-02-27 09:47:16] [build-stdout]     UNUSED_PARAM(schedulingPolicy)
@@ -51,6 +54,8 @@ The **macOS** `14.3` and **iOS** `17.3` builds are currently failing due to an e
 [2024-02-27 09:47:24] [ERROR] Spawned process exited abnormally (code 1; tried to run: [/opt/homebrew/Caskroom/codeql/2.16.3/codeql/tools/osx64/preload_tracer, ./Tools/Scripts/build-webkit, --jsc-only, --debug])
 A fatal error occurred: Exit status 1 from command: [./Tools/Scripts/build-webkit, --jsc-only, --debug]
 ```
+
+</details>
 
 ## Getting Started
 
