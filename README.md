@@ -10,21 +10,21 @@
 
 ### nightly
 
-| Version  | Compiles | CodeQL | Binary |
-| -------- | :------: | :----: | :----: |
-| `main` |    ❌    |   ❌    |   ❌   |
+| Version | Compiles | CodeQL | Binary |
+| ------- | :------: | :----: | :----: |
+| `main`  |    ❌     |   ❌    |   ❌    |
 
 ### macOS
 
-| Version  | Compiles | CodeQL | Binary |
-| -------- | :------: | :----: | :----: |
-| iOS 14.3 |    ❌    |   ❌    |   ❌   |
+| Version | Compiles | CodeQL | Binary |
+| ------- | :------: | :----: | :----: |
+| 14.3    |    ❌     |   ❌    |   ❌    |
 
 ### iOS
 
-| Version  | Compiles | CodeQL | Binary |
-| -------- | :------: | :----: | :----: |
-| iOS 17.3 |    ❌    |   ❌    |   ❌   |
+| Version | Compiles | CodeQL | Binary |
+| ------- | :------: | :----: | :----: |
+| 17.3    |    ❌     |   ❌    |   ❌    |
 
 ## Getting Started
 
