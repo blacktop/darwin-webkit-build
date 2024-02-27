@@ -27,9 +27,9 @@ jobs:
         run: |
           sudo xcode-select -s /Applications/Xcode_15.2.app
 
-      - name: Build XNU CodeQL Database
+      - name: Build WebKit CodeQL Database
         run: |
-          IOS_VERSION='${{ matrix.ios-version }}' bash -x codeql.sh
+          OS_TYPE="iOS" IOS_VERSION='${{ matrix.ios-version }}' bash -x codeql.sh
           echo "$(shasum -a 256 webkit-codeql.zip)"
           shasum -a 256 webkit-codeql.zip > webkit-codeql.zip.sha256
 
