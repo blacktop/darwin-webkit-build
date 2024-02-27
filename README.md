@@ -8,7 +8,7 @@
 
 ## Supported OS Versions
 
-### `nightly`
+### nightly
 
 | Version  | Compiles | CodeQL | Binary |
 | -------- | :------: | :----: | :----: |
