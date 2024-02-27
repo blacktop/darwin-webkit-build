@@ -89,31 +89,31 @@ function clone_webkit() {
             if [ -z "$MACOS_VERSION" ]; then
                 gum style --border normal --margin "1" --padding "1 2" --border-foreground 212 "Choose $(gum style --foreground 212 'macOS') version to build:"
                 MACOS_VERSION=$(gum choose "14.3")
-                case ${MACOS_VERSION} in
-                '14.3')
-                    RELEASE_URL='https://raw.githubusercontent.com/apple-oss-distributions/distribution-macOS/macos-143/release.json'
-                    ;;
-                *)
-                    error "Invalid macOS version"
-                    exit 1
-                    ;;
-                esac
             fi
+            case ${MACOS_VERSION} in
+            '14.3')
+                RELEASE_URL='https://raw.githubusercontent.com/apple-oss-distributions/distribution-macOS/macos-143/release.json'
+                ;;
+            *)
+                error "Invalid macOS version"
+                exit 1
+                ;;
+            esac
             ;;
         'iOS')
             if [ -z "$IOS_VERSION" ]; then
                 gum style --border normal --margin "1" --padding "1 2" --border-foreground 212 "Choose $(gum style --foreground 212 'iOS') version to build:"
                 IOS_VERSION=$(gum choose "17.3")
-                case ${IOS_VERSION} in
-                '17.3')
-                    RELEASE_URL='https://raw.githubusercontent.com/apple-oss-distributions/distribution-iOS/ios-173/release.json'
-                    ;;
-                *)
-                    error "Invalid iOS version"
-                    exit 1
-                    ;;
-                esac
             fi
+            case ${IOS_VERSION} in
+            '17.3')
+                RELEASE_URL='https://raw.githubusercontent.com/apple-oss-distributions/distribution-iOS/ios-173/release.json'
+                ;;
+            *)
+                error "Invalid iOS version"
+                exit 1
+                ;;
+            esac
             ;;
         *)
             error "Invalid OS type"
@@ -122,7 +122,7 @@ function clone_webkit() {
         esac
         # Parse the latest WebKit version from the release.json and lookup in the WebKit tags
         local version
-        version=$(curl -s "$RELEASE_URL" | jq -r '.projects[] | select(.project=="WebKit") | .tag')
+        version=$(curl -s $RELEASE_URL | jq -r '.projects[] | select(.project=="WebKit") | .tag')
         info "Using version: $version"
         get_version "$version"
     fi
