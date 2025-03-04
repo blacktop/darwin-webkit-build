@@ -99,4 +99,4 @@ Script builds and zips up the CodeQL database
 
 ## License
 
-MIT Copyright (c) 2024 blacktop
+MIT Copyright (c) 2024-2025 blacktop
