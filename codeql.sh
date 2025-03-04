@@ -146,14 +146,20 @@ function create_db() {
     WEBKIT_SRC_DIR="${WORK_DIR}/WebKit"
     DATABASE_DIR="${WORK_DIR}/webkit-codeql"
     rm -rf "${DATABASE_DIR}"
+    ARCHS="arm64"
     running "📦 Creating the CodeQL database..."
-    # CODEQL_CMD="./Tools/Scripts/build-webkit --release"
-    CODEQL_CMD="./Tools/Scripts/build-webkit --jsc-only --debug"
+    CODEQL_CMD="./Tools/Scripts/build-webkit --debug --ios-device --export-compile-commands"
+    # CODEQL_CMD="./Tools/Scripts/build-jsc --debug --export-compile-commands"
+    cd "${WEBKIT_SRC_DIR}"
+    info "Building webkit..."
+    ./Tools/Scripts/build-webkit --debug --ios-device --export-compile-commands
+    zip -r -X "${WORK_DIR}/webkit_compile_commands.zip" "${WEBKIT_SRC_DIR}"/WebKit/WebKitBuild/Debug-iphoneos/compile_commands/*
+    info "Building CodeQL DB..."
     codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --source-root="${WEBKIT_SRC_DIR}" --command="${CODEQL_CMD}"
     info "Deleting log files..."
     rm -rf "${DATABASE_DIR}"/log
     info "Zipping the CodeQL database..."
-    zip -r -X webkit-codeql.zip "${DATABASE_DIR}"/*
+    zip -r -X "${WORK_DIR}/webkit-codeql.zip" "${DATABASE_DIR}"/*
 }
 
 main() {
