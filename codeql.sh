@@ -169,25 +169,22 @@ function create_db() {
     WEBKIT_SRC_DIR="${WORK_DIR}/WebKit"
     DATABASE_DIR="${WORK_DIR}/webkit-codeql"
     rm -rf "${DATABASE_DIR}"
+    cd "${WEBKIT_SRC_DIR}"
     ARCHS="arm64"
     running "📦 Creating the CodeQL database..."
 
+    info "Building CodeQL DB..."
     # Build command with appropriate build type flag
     BUILD_CMD="./Tools/Scripts/build-webkit --${BUILD_TYPE} --ios-device --export-compile-commands"
-
-    info "Building webkit..."
-    cd "${WEBKIT_SRC_DIR}"
-    ${BUILD_CMD}
+    codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
 
     info "Zipping the compile_commands..."
     BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
     zip -r -X "${WORK_DIR}/webkit-compile_commands-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}-iphoneos/compile_commands"
 
-    info "Building CodeQL DB..."
-    codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
-
     info "Deleting log files..."
     rm -rf "${DATABASE_DIR}"/log
+
     info "Zipping the CodeQL database..."
     zip -r -X "${WORK_DIR}/webkit-codeql-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"
 }
