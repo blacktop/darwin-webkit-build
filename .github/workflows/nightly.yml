@@ -16,6 +16,9 @@ concurrency:
 jobs:
   build:
     runs-on: macos-15
+    strategy:
+      matrix:
+        os-version: [ 'latest' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,20 +31,27 @@ jobs:
 
       - name: Build WebKit CodeQL Database
         run: |
-          WEBKIT_VERSION=latest bash -x codeql.sh
-          echo "$(shasum -a 256 webkit-codeql.zip)"
-          shasum -a 256 webkit-codeql.zip > webkit-codeql.zip.sha256
+          WEBKIT_VERSION=${{ matrix.os-version }} OS_TYPE=iOS OS_VERSION=${{ matrix.os-version }} bash -x codeql.sh
+          echo "$(shasum -a 256 webkit-codeql-iOS-${{ matrix.os-version }}.zip)"
+          shasum -a 256 webkit-codeql-iOS-${{ matrix.os-version }}.zip > webkit-codeql-iOS-${{ matrix.os-version }}.zip.sha256
+
+      - name: Set WEBKIT_COMMIT
+        run: |
+          cd WebKit
+          echo "WEBKIT_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: webkit-codeql-nightly
-          path: webkit-codeql.zip
+          path: webkit-codeql-iOS-${{ matrix.os-version }}.zip
 
       - name: Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           ls -lah
-          gh release upload nightly --clobber webkit-codeql.zip
-          gh release upload nightly --clobber webkit-codeql.zip.sha256
+          gh release upload nightly --clobber webkit_compile_commands-iOS-${{ matrix.os-version }}.zip
+          gh release upload nightly --clobber webkit-codeql-iOS-${{ matrix.os-version }}.zip
+          gh release upload nightly --clobber webkit-codeql-iOS-${{ matrix.os-version }}.zip.sha256
+          gh release edit nightly --notes "commit: \`${{ env.WEBKIT_COMMIT }}\`"

@@ -17,6 +17,22 @@ export COL_BLUE=$ESC_SEQ"34;01m"
 export COL_MAGENTA=$ESC_SEQ"35;01m"
 export COL_CYAN=$ESC_SEQ"36;01m"
 
+# Default build type (release)
+BUILD_TYPE="release"
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --debug)
+            BUILD_TYPE="debug"
+            shift
+            ;;
+        *)
+            shift
+            ;;
+    esac
+done
+
 function running() {
     echo -e "$COL_MAGENTA ⇒ $COL_RESET""$1"
 }
@@ -25,20 +41,27 @@ function info() {
     echo -e "$COL_BLUE[info] $COL_RESET""$1"
 }
 
+function error() {
+    echo -e "$COL_RED[error] $COL_RESET""$1"
+}
+
 # Config
 : ${OS_TYPE:=''}
-: ${IOS_VERSION:=''}
-: ${MACOS_VERSION:=''}
+: ${OS_VERSION:=''}
 : ${WEBKIT_VERSION:=''}
+: ${RELEASE:=''}
+: ${DEBUG:=''}
 
 WORK_DIR="$PWD"
 
 # Help
 if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
-    echo 'Usage: codeql.sh
+    echo 'Usage: codeql.sh [options]
 
 This script creates the WebKit CodeQL database
 
+Options:
+  --debug    Build in debug mode (default is release mode)
 '
     exit
 fi
@@ -87,11 +110,11 @@ function clone_webkit() {
         local version
         case ${OS_TYPE} in
         'macOS')
-            if [ -z "$MACOS_VERSION" ]; then
+            if [ -z "$OS_VERSION" ]; then
                 gum style --border normal --margin "1" --padding "1 2" --border-foreground 212 "Choose $(gum style --foreground 212 'macOS') version to build:"
-                MACOS_VERSION=$(gum choose "15.2")
+                OS_VERSION=$(gum choose "15.2")
             fi
-            case ${MACOS_VERSION} in
+            case ${OS_VERSION} in
             '15.2')
                 RELEASE_URL='https://raw.githubusercontent.com/apple-oss-distributions/distribution-macOS/macos-152/release.json'
                 # Parse the latest WebKit version from the release.json and lookup in the WebKit tags
@@ -104,11 +127,11 @@ function clone_webkit() {
             esac
             ;;
         'iOS')
-            if [ -z "$IOS_VERSION" ]; then
+            if [ -z "$OS_VERSION" ]; then
                 gum style --border normal --margin "1" --padding "1 2" --border-foreground 212 "Choose $(gum style --foreground 212 'iOS') version to build:"
-                IOS_VERSION=$(gum choose "18.2" "18.3.1")
+                OS_VERSION=$(gum choose "18.2" "18.3.1")
             fi
-            case ${IOS_VERSION} in
+            case ${OS_VERSION} in
             '18.2')
                 RELEASE_URL='https://raw.githubusercontent.com/apple-oss-distributions/distribution-iOS/ios-182/release.json'
                 # Parse the latest WebKit version from the release.json and lookup in the WebKit tags
@@ -148,19 +171,25 @@ function create_db() {
     rm -rf "${DATABASE_DIR}"
     ARCHS="arm64"
     running "📦 Creating the CodeQL database..."
-    CODEQL_CMD="./Tools/Scripts/build-webkit --debug --ios-device --export-compile-commands"
-    # CODEQL_CMD="./Tools/Scripts/build-jsc --debug --export-compile-commands"
+
+    # Build command with appropriate build type flag
+    BUILD_CMD="./Tools/Scripts/build-webkit --${BUILD_TYPE} --ios-device --export-compile-commands"
+
     info "Building webkit..."
     cd "${WEBKIT_SRC_DIR}"
-    ./Tools/Scripts/build-webkit --debug --ios-device --export-compile-commands
+    ${BUILD_CMD}
+
     info "Zipping the compile_commands..."
-    zip -r -X "${WORK_DIR}/webkit_compile_commands.zip" "${WEBKIT_SRC_DIR}"/WebKit/WebKitBuild/Debug-iphoneos/compile_commands/*
+    BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
+    zip -r -X "${WORK_DIR}/webkit_compile_commands.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}-iphoneos/compile_commands/"*
+
     info "Building CodeQL DB..."
-    codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${CODEQL_CMD}"
+    codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
+
     info "Deleting log files..."
     rm -rf "${DATABASE_DIR}"/log
     info "Zipping the CodeQL database..."
-    zip -r -X "${WORK_DIR}/webkit-codeql.zip" "${DATABASE_DIR}"/*
+    zip -r -X "${WORK_DIR}/webkit-codeql-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"/*
 }
 
 main() {

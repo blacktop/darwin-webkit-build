@@ -16,7 +16,7 @@ jobs:
     runs-on: macos-15
     strategy:
       matrix:
-        ios-version: [ '18.3.1' ]
+        os-version: [ '18.3.1' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,21 +29,27 @@ jobs:
 
       - name: Build WebKit CodeQL Database
         run: |
-          OS_TYPE="iOS" IOS_VERSION='${{ matrix.ios-version }}' bash -x codeql.sh
-          echo "$(shasum -a 256 webkit-codeql.zip)"
-          shasum -a 256 webkit-codeql.zip > webkit-codeql.zip.sha256
+          OS_TYPE="iOS" OS_VERSION='${{ matrix.os-version }}' bash -x codeql.sh
+          echo "$(shasum -a 256 webkit-codeql-iOS-${{ matrix.os-version }}.zip)"
+          shasum -a 256 webkit-codeql-iOS-${{ matrix.os-version }}.zip > webkit-codeql-iOS-${{ matrix.os-version }}.zip.sha256
+
+      - name: Set WEBKIT_COMMIT
+        run: |
+          cd WebKit
+          echo "WEBKIT_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: webkit-codeql-${{ matrix.ios-version }}
-          path: webkit-codeql.zip
+          name: webkit-codeql-${{ matrix.os-version }}
+          path: webkit-codeql-iOS-${{ matrix.os-version }}.zip
 
       - name: Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           ls -lah
-          gh release upload v${{ matrix.ios-version }} --clobber webkit_compile_commands.zip
-          gh release upload v${{ matrix.ios-version }} --clobber webkit-codeql.zip
-          gh release upload v${{ matrix.ios-version }} --clobber webkit-codeql.zip.sha256
+          gh release upload v${{ matrix.os-version }} --clobber webkit_compile_commands-iOS-${{ matrix.os-version }}.zip
+          gh release upload v${{ matrix.os-version }} --clobber webkit-codeql-iOS-${{ matrix.os-version }}.zip
+          gh release upload v${{ matrix.os-version }} --clobber webkit-codeql-iOS-${{ matrix.os-version }}.zip.sha256
+          gh release edit v${{ matrix.os-version }} --notes "commit: \`${{ env.WEBKIT_COMMIT }}\`"
