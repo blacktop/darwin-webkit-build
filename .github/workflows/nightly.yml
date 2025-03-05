@@ -6,6 +6,12 @@ on:
     paths-ignore: [ "*.md" ]
   pull_request:
     branches: [ main ]
+  schedule:
+    - cron: "0 0 * * *" # Every day at midnight
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
