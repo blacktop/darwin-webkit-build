@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: macos-15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,7 +18,7 @@ jobs:
 
       - name: Deps
         run: |
-          sudo xcode-select -s /Applications/Xcode_15.2.app
+          sudo xcode-select -s /Applications/Xcode_16.2.app
 
       - name: Build WebKit CodeQL Database
         run: |
