@@ -181,7 +181,7 @@ function create_db() {
 
     info "Zipping the compile_commands..."
     BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
-    zip -r -X "${WORK_DIR}/webkit_compile_commands.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}-iphoneos/compile_commands/"*
+    zip -r -X "${WORK_DIR}/webkit-compile_commands-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}-iphoneos/compile_commands"
 
     info "Building CodeQL DB..."
     codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
@@ -189,7 +189,7 @@ function create_db() {
     info "Deleting log files..."
     rm -rf "${DATABASE_DIR}"/log
     info "Zipping the CodeQL database..."
-    zip -r -X "${WORK_DIR}/webkit-codeql-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"/*
+    zip -r -X "${WORK_DIR}/webkit-codeql-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"
 }
 
 main() {

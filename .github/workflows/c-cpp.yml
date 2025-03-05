@@ -30,8 +30,8 @@ jobs:
       - name: Build WebKit CodeQL Database
         run: |
           OS_TYPE="iOS" OS_VERSION='${{ matrix.os-version }}' bash -x codeql.sh
-          echo "$(shasum -a 256 webkit-codeql-iOS-${{ matrix.os-version }}.zip)"
-          shasum -a 256 webkit-codeql-iOS-${{ matrix.os-version }}.zip > webkit-codeql-iOS-${{ matrix.os-version }}.zip.sha256
+          echo "$(shasum -a 256 webkit-codeql-iOS-${{ matrix.os-version }}-release.zip)"
+          shasum -a 256 webkit-codeql-iOS-${{ matrix.os-version }}-release.zip > webkit-codeql-iOS-${{ matrix.os-version }}-release.zip.sha256
 
       - name: Set WEBKIT_COMMIT
         run: |
@@ -42,14 +42,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: webkit-codeql-${{ matrix.os-version }}
-          path: webkit-codeql-iOS-${{ matrix.os-version }}.zip
+          path: webkit-codeql-iOS-${{ matrix.os-version }}-release.zip
 
       - name: Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           ls -lah
-          gh release upload v${{ matrix.os-version }} --clobber webkit_compile_commands-iOS-${{ matrix.os-version }}.zip
-          gh release upload v${{ matrix.os-version }} --clobber webkit-codeql-iOS-${{ matrix.os-version }}.zip
-          gh release upload v${{ matrix.os-version }} --clobber webkit-codeql-iOS-${{ matrix.os-version }}.zip.sha256
+          gh release upload v${{ matrix.os-version }} --clobber webkit-compile_commands-iOS-${{ matrix.os-version }}-release.zip
+          gh release upload v${{ matrix.os-version }} --clobber webkit-codeql-iOS-${{ matrix.os-version }}-release.zip
+          gh release upload v${{ matrix.os-version }} --clobber webkit-codeql-iOS-${{ matrix.os-version }}-release.zip.sha256
           gh release edit v${{ matrix.os-version }} --notes "commit: \`${{ env.WEBKIT_COMMIT }}\`"
