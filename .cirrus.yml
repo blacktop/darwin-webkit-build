@@ -1,0 +1,7 @@
+task:
+  name: Build
+  macos_instance:
+    image: sequoia-codeql
+  codeql_script: OS_TYPE="iOS" OS_VERSION="18.3.1" bash -x codeql.sh
+  binary_artifacts:
+    path: webkit*.zip

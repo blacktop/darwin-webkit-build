@@ -1,0 +1,17 @@
+{
+    "codeQL.githubDatabase.update": "never",
+    "codeQL.githubDatabase.download": "never",
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "clangd.path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd",
+    "clangd.arguments": [
+        // "--log=verbose",
+        // "--pretty",
+        "--background-index",
+        "--header-insertion=never", // clangd has the tendency to insert unnecessary includes, so I prefer to just disable the feature.
+        "--limit-results=5000", // The default limit for reference search results is too low for WebKit
+        "--enable-config", // Enable reading .clangd file
+        "-j",
+        "10",
+        "--compile-commands-dir=${workspaceFolder}/WebKit",
+    ],
+}
