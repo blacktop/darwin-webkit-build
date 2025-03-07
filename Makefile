@@ -30,8 +30,9 @@ codeql-db:
 
 clean:
 	@echo " > Cleaning up"
-	@rm -rf ./artifacts
+	@rm -rf ./WebKit
 	@rm -rf ./webkit-codeql
+	@rm -rf ./artifacts
 	@rm webkit-*.zip
 	@echo " 🎉 Done! 🎉"
 

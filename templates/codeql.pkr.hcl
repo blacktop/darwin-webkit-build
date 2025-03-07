@@ -18,8 +18,8 @@ variable "macos_vm_name" {
 source "tart-cli" "tart" {
   vm_base_name = "ghcr.io/cirruslabs/macos-${var.macos_version}:latest"
   vm_name      = "${var.macos_vm_name}"
-  cpu_count    = 4
-  memory_gb    = 8
+  cpu_count    = 6
+  memory_gb    = 32
   disk_size_gb = 120
   headless     = true
   ssh_password = "admin"
