@@ -27,7 +27,7 @@ export-vm:
 .PHONY: codeql-db
 codeql-db:
 	@echo " > Building CodeQL Database for $(OS_TYPE) $(OS_VERSION)"
-	@OS_TYPE="$(OS_TYPE)" OS_VERSION="$(OS_VERSION)" cirrus run
+	@OS_TYPE="$(OS_TYPE)" OS_VERSION="$(OS_VERSION)" cirrus run -e OS_TYPE -e OS_VERSION
 	@echo " 🎉 Done! 🎉"
 	@cirrus run --artifacts-dir artifacts
 
