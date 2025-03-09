@@ -17,14 +17,15 @@ export COL_BLUE=$ESC_SEQ"34;01m"
 export COL_MAGENTA=$ESC_SEQ"35;01m"
 export COL_CYAN=$ESC_SEQ"36;01m"
 
-# Default build type (release)
-BUILD_TYPE="release"
-
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --debug)
             BUILD_TYPE="debug"
+            shift
+            ;;
+        --jsc)
+            BUILD_TARGET="jsc"
             shift
             ;;
         *)
@@ -49,8 +50,9 @@ function error() {
 : ${OS_TYPE:=''}
 : ${OS_VERSION:=''}
 : ${WEBKIT_VERSION:=''}
-: ${RELEASE:=''}
-: ${DEBUG:=''}
+
+: ${BUILD_TYPE:='release'}
+: ${BUILD_TARGET:='webkit'}
 
 WORK_DIR="$PWD"
 
@@ -62,6 +64,7 @@ This script creates the WebKit CodeQL database
 
 Options:
   --debug    Build in debug mode (default is release mode)
+  --jsc      Build JavaScriptCore instead of WebKit
 '
     exit
 fi
@@ -173,20 +176,38 @@ function create_db() {
     ARCHS="arm64"
     running "📦 Creating the CodeQL database..."
 
-    info "Building CodeQL DB..."
-    # Build command with appropriate build type flag
-    BUILD_CMD="./Tools/Scripts/build-webkit --${BUILD_TYPE} --ios-device --export-compile-commands"
-    codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
+    # Set the build command based on target
+    if [[ "${BUILD_TARGET}" == "jsc" ]]; then
+        BUILD_CMD="./Tools/Scripts/build-jsc --${BUILD_TYPE} --export-compile-commands"
+        info "Building CodeQL DB for 'jsc'..."
+        codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
+        ./Tools/Scripts/generate-compile-commands WebKitBuild/Release
 
-    info "Zipping the compile_commands..."
-    BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
-    zip -r -X "${WORK_DIR}/webkit-compile_commands-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}-iphoneos/compile_commands"
+        info "Zipping the compile_commands..."
+        BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
+        zip -r -X "${WORK_DIR}/jsc-compile_commands-${OS_VERSION}.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/Release/compile_commands"
 
-    info "Deleting log files..."
-    rm -rf "${DATABASE_DIR}"/log
+        info "Deleting log files..."
+        rm -rf "${DATABASE_DIR}"/log
 
-    info "Zipping the CodeQL database..."
-    zip -r -X "${WORK_DIR}/webkit-codeql-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"
+        info "Zipping the CodeQL database..."
+        zip -r -X "${WORK_DIR}/jsc-codeql-${OS_VERSION}.zip" "${DATABASE_DIR}"        
+    else
+        BUILD_CMD="./Tools/Scripts/build-webkit --${BUILD_TYPE} --ios-device --no-unified-builds --export-compile-commands"
+        info "Building CodeQL DB for 'webkit'..."
+        codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
+        ./Tools/Scripts/generate-compile-commands WebKitBuild/Release
+
+        info "Zipping the compile_commands..."
+        BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
+        zip -r -X "${WORK_DIR}/webkit-compile_commands-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}-iphoneos/compile_commands"
+
+        info "Deleting log files..."
+        rm -rf "${DATABASE_DIR}"/log
+
+        info "Zipping the CodeQL database..."
+        zip -r -X "${WORK_DIR}/webkit-codeql-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"        
+    fi
 }
 
 main() {
