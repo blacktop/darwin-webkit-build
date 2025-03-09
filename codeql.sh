@@ -185,13 +185,13 @@ function create_db() {
 
         info "Zipping the compile_commands..."
         BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
-        zip -r -X "${WORK_DIR}/jsc-compile_commands-${OS_VERSION}.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}/compile_commands"
+        zip -r -X "${WORK_DIR}/jsc-compile_commands-${OS_VERSION}-${BUILD_TYPE}.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}/compile_commands"
 
         info "Deleting log files..."
         rm -rf "${DATABASE_DIR}"/log
 
         info "Zipping the CodeQL database..."
-        zip -r -X "${WORK_DIR}/jsc-codeql-${OS_VERSION}.zip" "${DATABASE_DIR}"        
+        zip -r -X "${WORK_DIR}/jsc-codeql-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"        
     else
         BUILD_CMD="./Tools/Scripts/build-webkit --${BUILD_TYPE} --ios-device --no-unified-builds --export-compile-commands"
         info "Building CodeQL DB for 'webkit'..."
