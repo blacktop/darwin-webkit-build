@@ -1,6 +1,9 @@
 MACOS_VERSION=sequoia-xcode
 MACOS_VM_NAME=sequoia-codeql
 
+OS_TYPE := "iOS"
+OS_VERSION := "18.3.1"
+
 .PHONY: deps
 deps:
 	@echo " > Installing dependencies"
@@ -23,10 +26,18 @@ export-vm:
 
 .PHONY: codeql-db
 codeql-db:
-	@echo " > Building CodeQL Database"
-	@cirrus run
+	@echo " > Building CodeQL Database for $(OS_TYPE) $(OS_VERSION)"
+	@OS_TYPE="$(OS_TYPE)" OS_VERSION="$(OS_VERSION)" cirrus run
 	@echo " 🎉 Done! 🎉"
 	@cirrus run --artifacts-dir artifacts
+
+.PHONY: release
+release:
+	@echo " > Creating release for $(OS_TYPE) $(OS_VERSION)"
+	gh release upload v$(OS_VERSION) --clobber webkit-compile_commands-$(OS_TYPE)-$(OS_VERSION)-release.zip
+	gh release upload v$(OS_VERSION) --clobber webkit-codeql-$(OS_TYPE)-$(OS_VERSION)-release.zip
+	gh release upload v$(OS_VERSION) --clobber webkit-codeql-$(OS_TYPE)-$(OS_VERSION)-release.zip.sha256
+	@echo " 🎉 Done! 🎉"
 
 clean:
 	@echo " > Cleaning up"
