@@ -178,14 +178,14 @@ function create_db() {
 
     # Set the build command based on target
     if [[ "${BUILD_TARGET}" == "jsc" ]]; then
-        BUILD_CMD="./Tools/Scripts/build-jsc --${BUILD_TYPE} --export-compile-commands"
+        BUILD_CMD="./Tools/Scripts/build-jsc --jsc-only --${BUILD_TYPE} --export-compile-commands"
         info "Building CodeQL DB for 'jsc'..."
         codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
         ./Tools/Scripts/generate-compile-commands WebKitBuild/Release
 
         info "Zipping the compile_commands..."
         BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
-        zip -r -X "${WORK_DIR}/jsc-compile_commands-${OS_VERSION}.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/Release/compile_commands"
+        zip -r -X "${WORK_DIR}/jsc-compile_commands-${OS_VERSION}.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}/compile_commands"
 
         info "Deleting log files..."
         rm -rf "${DATABASE_DIR}"/log
