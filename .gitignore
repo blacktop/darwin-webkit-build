@@ -36,5 +36,4 @@ Webkit/
 
 # CodeQL files
 webkit-codeql/
-webkit-codeql*.zip
-webkit_compile_commands*.zip
+dist/

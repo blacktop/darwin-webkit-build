@@ -44,7 +44,6 @@ clean:
 	@rm -rf ./WebKit
 	@rm -rf ./webkit-codeql
 	@rm -rf ./artifacts
-	@rm webkit-*.zip
 	@echo " 🎉 Done! 🎉"
 
 .DEFAULT_GOAL := build-vm

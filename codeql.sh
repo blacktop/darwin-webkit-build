@@ -178,13 +178,15 @@ function create_db() {
 
     # Set the build command based on target
     if [[ "${BUILD_TARGET}" == "jsc" ]]; then
-        BUILD_CMD="./Tools/Scripts/build-jsc --jsc-only --${BUILD_TYPE} --export-compile-commands"
+        # BUILD_CMD="./Tools/Scripts/build-jsc --jsc-only --${BUILD_TYPE} --export-compile-commands"
+        BUILD_CMD="./Tools/Scripts/build-jsc --cmakeargs="-DENABLE_UNIFIED_BUILDS=OFF" --export-compile-commands --architecture ARM64"
+        BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
+        
         info "Building CodeQL DB for 'jsc'..."
         codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
-        ./Tools/Scripts/generate-compile-commands WebKitBuild/Release
+        ./Tools/Scripts/generate-compile-commands "WebKitBuild/${BUILD_DIR}"
 
         info "Zipping the compile_commands..."
-        BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
         zip -r -X "${WORK_DIR}/jsc-compile_commands-${OS_VERSION}-${BUILD_TYPE}.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}/compile_commands"
 
         info "Deleting log files..."
@@ -194,12 +196,13 @@ function create_db() {
         zip -r -X "${WORK_DIR}/jsc-codeql-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"        
     else
         BUILD_CMD="./Tools/Scripts/build-webkit --${BUILD_TYPE} --ios-device --no-unified-builds --export-compile-commands"
+        BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
+        
         info "Building CodeQL DB for 'webkit'..."
         codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
         ./Tools/Scripts/generate-compile-commands WebKitBuild/Release
 
         info "Zipping the compile_commands..."
-        BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
         zip -r -X "${WORK_DIR}/webkit-compile_commands-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}-iphoneos/compile_commands"
 
         info "Deleting log files..."
