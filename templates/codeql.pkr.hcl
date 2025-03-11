@@ -19,7 +19,7 @@ source "tart-cli" "tart" {
   vm_base_name = "ghcr.io/cirruslabs/macos-${var.macos_version}:latest"
   vm_name      = "${var.macos_vm_name}"
   cpu_count    = 6
-  memory_gb    = 32
+  memory_gb    = 48
   disk_size_gb = 120
   headless     = true
   ssh_password = "admin"
