@@ -36,4 +36,4 @@ Webkit/
 
 # CodeQL files
 webkit-codeql/
-dist/
+artifacts/
