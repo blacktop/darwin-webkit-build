@@ -54,6 +54,9 @@ function error() {
 : ${BUILD_TYPE:='release'}
 : ${BUILD_TARGET:='webkit'}
 
+: ${CODEQL_THREADS:='--threads=0'}
+: ${CODEQL_RAM:=''}
+
 WORK_DIR="$PWD"
 
 # Help
@@ -123,6 +126,11 @@ function clone_webkit() {
                 # Parse the latest WebKit version from the release.json and lookup in the WebKit tags
                 version=$(curl -s $RELEASE_URL | jq -r '.projects[] | select(.project=="WebKit") | .tag')
                 ;;
+            '15.3')
+                RELEASE_URL='https://raw.githubusercontent.com/apple-oss-distributions/distribution-macOS/macos-153/release.json'
+                # Parse the latest WebKit version from the release.json and lookup in the WebKit tags
+                version=$(curl -s $RELEASE_URL | jq -r '.projects[] | select(.project=="WebKit") | .tag')
+                ;;
             *)
                 error "Invalid macOS version"
                 exit 1
@@ -137,6 +145,11 @@ function clone_webkit() {
             case ${OS_VERSION} in
             '18.2')
                 RELEASE_URL='https://raw.githubusercontent.com/apple-oss-distributions/distribution-iOS/ios-182/release.json'
+                # Parse the latest WebKit version from the release.json and lookup in the WebKit tags
+                version=$(curl -s $RELEASE_URL | jq -r '.projects[] | select(.project=="WebKit") | .tag')
+                ;;
+            '18.3')
+                RELEASE_URL='https://raw.githubusercontent.com/apple-oss-distributions/distribution-iOS/ios-183/release.json'
                 # Parse the latest WebKit version from the release.json and lookup in the WebKit tags
                 version=$(curl -s $RELEASE_URL | jq -r '.projects[] | select(.project=="WebKit") | .tag')
                 ;;
@@ -183,7 +196,7 @@ function create_db() {
         BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
         
         info "Building CodeQL DB for 'jsc'..."
-        codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
+        codeql database create "${DATABASE_DIR}" -v "${CODEQL_THREADS}" "${CODEQL_RAM}" --language=cpp --command="${BUILD_CMD}"
         ./Tools/Scripts/generate-compile-commands "WebKitBuild/${BUILD_DIR}"
 
         info "Zipping the compile_commands..."
@@ -199,7 +212,7 @@ function create_db() {
         BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
         
         info "Building CodeQL DB for 'webkit'..."
-        codeql database create "${DATABASE_DIR}" -v --threads=0 --language=cpp --command="${BUILD_CMD}"
+        codeql database create "${DATABASE_DIR}" -v "${CODEQL_THREADS}" "${CODEQL_RAM}" --language=cpp --command="${BUILD_CMD}"
         ./Tools/Scripts/generate-compile-commands WebKitBuild/Release
 
         info "Zipping the compile_commands..."
