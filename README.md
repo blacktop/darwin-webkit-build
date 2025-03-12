@@ -83,7 +83,7 @@ make build-vm
 Create CodeQL DB
 
 ```bash
-make codeql-db
+OS_VERSION=18.3.1 make codeql-db-jsc
 ```
 
 ```bash
@@ -97,12 +97,14 @@ make codeql-db
 ```
 
 ```bash
-❯ tree artifacts/
+tree artifacts/
 
 artifacts/
 └── Build
     └── binary
-        └── xnu-codeql.zip
+        ├── jsc-codeql-18.3.1-release.zip
+        ├── jsc-codeql-18.3.1-release.zip.sha256
+        └── jsc-compile_commands-18.3.1-release.zip
 
 3 directories, 1 file
 ```

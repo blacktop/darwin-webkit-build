@@ -1,8 +1,17 @@
-task:
-  name: Build
+jsc_task:
+  name: jsc
   macos_instance:
     image: sequoia-codeql
   codeql_script: OS_TYPE="${OS_TYPE}" OS_VERSION="${OS_VERSION}" CODEQL_RAM="--ram=32768" bash -x codeql.sh --jsc
   timeout_in: 420m  # 7 hours
   binary_artifacts:
     path: jsc-*.zip
+
+webkit_task:
+  name: webkit
+  macos_instance:
+    image: sequoia-codeql
+  codeql_script: OS_TYPE="${OS_TYPE}" OS_VERSION="${OS_VERSION}" CODEQL_RAM="--ram=32768" bash -x codeql.sh
+  timeout_in: 420m  # 7 hours
+  binary_artifacts:
+    path: webkit-*.zip

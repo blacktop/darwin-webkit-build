@@ -26,11 +26,20 @@ export-vm:
 	@tart export $(MACOS_VM_NAME)
 	@echo " 🎉 Done! 🎉"
 
-.PHONY: codeql-db
-codeql-db:
-	@echo " > Building CodeQL Database for $(OS_TYPE) $(OS_VERSION)"
-	@OS_TYPE="$(OS_TYPE)" OS_VERSION="$(OS_VERSION)" cirrus run --verbose --output simple -e OS_TYPE -e OS_VERSION --artifacts-dir artifacts
+.PHONY: codeql-db-jsc
+codeql-db-jsc:
+	@echo " > Building WebKit (JSC) CodeQL Database for $(OS_TYPE) $(OS_VERSION)"
+	@OS_TYPE="$(OS_TYPE)" OS_VERSION="$(OS_VERSION)" cirrus run --verbose --output simple -e OS_TYPE -e OS_VERSION --artifacts-dir artifacts jsc
 	@echo " 🎉 Done! 🎉"
+
+.PHONY: codeql-db-wk
+codeql-db-wk:
+	@echo " > Building WebKit CodeQL Database for $(OS_TYPE) $(OS_VERSION)"
+	@OS_TYPE="$(OS_TYPE)" OS_VERSION="$(OS_VERSION)" cirrus run --verbose --output simple -e OS_TYPE -e OS_VERSION --artifacts-dir artifacts webkit
+	@echo " 🎉 Done! 🎉"	
+
+.PHONY: codeql-db
+codeql-db: codeql-db-jsc codeql-db-wk
 
 ${artifact_dir}/webkit-codeql-${OS_TYPE}-${OS_VERSION}-release.zip.sha256:
 	@echo " > Creating SHA256 checksum for webkit-codeql-$(OS_TYPE)-$(OS_VERSION)-release.zip"
