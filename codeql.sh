@@ -54,8 +54,8 @@ function error() {
 : ${BUILD_TYPE:='release'}
 : ${BUILD_TARGET:='webkit'}
 
-: ${CODEQL_THREADS:='--threads=0'}
-: ${CODEQL_RAM:=''}
+: ${CODEQL_THREADS:=--threads=0}
+: ${CODEQL_RAM:=}
 
 WORK_DIR="$PWD"
 
@@ -118,7 +118,7 @@ function clone_webkit() {
         'macOS')
             if [ -z "$OS_VERSION" ]; then
                 gum style --border normal --margin "1" --padding "1 2" --border-foreground 212 "Choose $(gum style --foreground 212 'macOS') version to build:"
-                OS_VERSION=$(gum choose "15.2")
+                OS_VERSION=$(gum choose "15.2" "15.3")
             fi
             case ${OS_VERSION} in
             '15.2')
@@ -140,7 +140,7 @@ function clone_webkit() {
         'iOS')
             if [ -z "$OS_VERSION" ]; then
                 gum style --border normal --margin "1" --padding "1 2" --border-foreground 212 "Choose $(gum style --foreground 212 'iOS') version to build:"
-                OS_VERSION=$(gum choose "18.2" "18.3.1")
+                OS_VERSION=$(gum choose "18.2" "18.3" "18.3.1")
             fi
             case ${OS_VERSION} in
             '18.2')
@@ -154,7 +154,10 @@ function clone_webkit() {
                 version=$(curl -s $RELEASE_URL | jq -r '.projects[] | select(.project=="WebKit") | .tag')
                 ;;
             '18.3.1')
-                version="WebKit-7620.2.4"
+                version="WebKit-7620.2.4.10.7"
+                ;;
+            '18.3.2')
+                version="WebKit-7620.2.4.10.8"
                 ;;
             *)
                 error "Invalid iOS version"
