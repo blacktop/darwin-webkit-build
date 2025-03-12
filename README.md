@@ -26,7 +26,7 @@
 | ------- | :------: | :----: | :----: |
 | 18.2    |    ❌    |   ❌   |   ❌    |
 | 18.3    |    ❌    |   ❌   |   ❌    |
-| 18.3.1  |    ✅    |   [JSC](https://github.com/blacktop/darwin-webkit-build/releases/download/v18.3.1/jsc-codeql-18.3.1-release.zip)❌   |   ❌    |
+| 18.3.1  |    ✅    |   [JSC](https://github.com/blacktop/darwin-webkit-build/releases/download/v18.3.1/jsc-codeql-18.3.1-release.zip)   |   ❌    |
 | 18.3.2  |    ❌    |   ❌   |   ❌    |
 
 ## Getting Started
