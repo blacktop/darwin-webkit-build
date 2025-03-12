@@ -3,7 +3,7 @@
 [![WebKit (JSC) CodeQL](https://github.com/blacktop/darwin-webkit-build/actions/workflows/jsc.yml/badge.svg)](https://github.com/blacktop/darwin-webkit-build/actions/workflows/jsc.yml) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/blacktop/darwin-webkit-build/total)
  [![LICENSE](https://img.shields.io/:license-mit-blue.svg)](https://doge.mit-license.org)
 
-> WebKit CodeQL Databases
+> WebKit/JSC CodeQL Databases and `compile_commands.json`
 
 
 ## Supported OS Versions
