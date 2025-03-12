@@ -3,7 +3,7 @@
 [![WebKit (JSC) CodeQL](https://github.com/blacktop/darwin-webkit-build/actions/workflows/jsc.yml/badge.svg)](https://github.com/blacktop/darwin-webkit-build/actions/workflows/jsc.yml) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/blacktop/darwin-webkit-build/total)
  [![LICENSE](https://img.shields.io/:license-mit-blue.svg)](https://doge.mit-license.org)
 
-> WebKit/JSC CodeQL Databases and `compile_commands.json`
+> WebKit/JSC CodeQL DBs and `compile_commands.json`
 
 
 ## Supported OS Versions
@@ -27,7 +27,7 @@
 | 18.2    |    ❌    |   ❌   |   ❌    |
 | 18.3    |    ❌    |   ❌   |   ❌    |
 | 18.3.1  |    ✅    |   [JSC](https://github.com/blacktop/darwin-webkit-build/releases/download/v18.3.1/jsc-codeql-18.3.1-release.zip)   |   ❌    |
-| 18.3.2  |    ❌    |   ❌   |   ❌    |
+| 18.3.2  |    ✅    |   [JSC](https://github.com/blacktop/darwin-webkit-build/releases/download/v18.3.2/jsc-codeql-18.3.2-release.zip)   |   ❌    |
 
 ## Getting Started
 
