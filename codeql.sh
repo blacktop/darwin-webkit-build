@@ -199,7 +199,7 @@ function create_db() {
         BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
         
         info "Building CodeQL DB for 'jsc'..."
-        codeql database create "${DATABASE_DIR}" -v "${CODEQL_THREADS}" "${CODEQL_RAM}" --language=cpp --command="${BUILD_CMD}"
+        codeql database create "${DATABASE_DIR}" -v ${CODEQL_THREADS} ${CODEQL_RAM} --language=cpp --command="${BUILD_CMD}"
         ${WEBKIT_SRC_DIR}/Tools/Scripts/generate-compile-commands "WebKitBuild/${BUILD_DIR}"
 
         info "Zipping the compile_commands..."
@@ -215,7 +215,7 @@ function create_db() {
         BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
         
         info "Building CodeQL DB for 'webkit'..."
-        codeql database create "${DATABASE_DIR}" -v "${CODEQL_THREADS}" "${CODEQL_RAM}" --language=cpp --command="${BUILD_CMD}"
+        codeql database create "${DATABASE_DIR}" -v ${CODEQL_THREADS} ${CODEQL_RAM} --language=cpp --command="${BUILD_CMD}"
         ${WEBKIT_SRC_DIR}/Tools/Scripts/generate-compile-commands "WebKitBuild/${BUILD_DIR}"
 
         info "Zipping the compile_commands..."
