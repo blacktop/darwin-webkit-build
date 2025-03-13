@@ -200,10 +200,10 @@ function create_db() {
         
         info "Building CodeQL DB for 'jsc'..."
         codeql database create "${DATABASE_DIR}" -v "${CODEQL_THREADS}" "${CODEQL_RAM}" --language=cpp --command="${BUILD_CMD}"
-        ./Tools/Scripts/generate-compile-commands "WebKitBuild/${BUILD_DIR}"
+        ${WEBKIT_SRC_DIR}/Tools/Scripts/generate-compile-commands "WebKitBuild/${BUILD_DIR}"
 
         info "Zipping the compile_commands..."
-        zip -X "${WORK_DIR}/jsc-compile_commands-${OS_VERSION}-${BUILD_TYPE}.zip" "${WEBKIT_SRC_DIR}/compile_commands.json"
+        zip -j "${WORK_DIR}/jsc-compile_commands-${OS_VERSION}-${BUILD_TYPE}.zip" -x "${WEBKIT_SRC_DIR}/compile_commands.json"
 
         info "Deleting log files..."
         rm -rf "${DATABASE_DIR}"/log
@@ -216,10 +216,10 @@ function create_db() {
         
         info "Building CodeQL DB for 'webkit'..."
         codeql database create "${DATABASE_DIR}" -v "${CODEQL_THREADS}" "${CODEQL_RAM}" --language=cpp --command="${BUILD_CMD}"
-        ./Tools/Scripts/generate-compile-commands WebKitBuild/Release
+        ${WEBKIT_SRC_DIR}/Tools/Scripts/generate-compile-commands "WebKitBuild/${BUILD_DIR}"
 
         info "Zipping the compile_commands..."
-        zip -r -X "${WORK_DIR}/webkit-compile_commands-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${WEBKIT_SRC_DIR}/compile_commands.json"
+        zip -j "${WORK_DIR}/webkit-compile_commands-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" -x "${WEBKIT_SRC_DIR}/compile_commands.json"
 
         info "Deleting log files..."
         rm -rf "${DATABASE_DIR}"/log

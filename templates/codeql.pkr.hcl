@@ -20,7 +20,7 @@ source "tart-cli" "tart" {
   vm_name      = "${var.macos_vm_name}"
   cpu_count    = 6
   memory_gb    = 48
-  disk_size_gb = 120
+  disk_size_gb = 200
   headless     = true
   ssh_password = "admin"
   ssh_username = "admin"
