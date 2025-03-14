@@ -186,46 +186,50 @@ function clone_webkit() {
 function create_db() {
     WORK_DIR="$PWD"
     WEBKIT_SRC_DIR="${WORK_DIR}/WebKit"
-    DATABASE_DIR="${WORK_DIR}/webkit-codeql"
-    rm -rf "${DATABASE_DIR}"
     cd "${WEBKIT_SRC_DIR}"
     ARCHS="arm64"
     running "📦 Creating the CodeQL database..."
 
     # Set the build command based on target
     if [[ "${BUILD_TARGET}" == "jsc" ]]; then
+        DATABASE_DIR="${WORK_DIR}/jsc-codeql"
+        rm -rf "${DATABASE_DIR}"
         # BUILD_CMD="./Tools/Scripts/build-jsc --jsc-only --${BUILD_TYPE} --export-compile-commands"
-        BUILD_CMD="./Tools/Scripts/build-jsc --cmakeargs="-DENABLE_UNIFIED_BUILDS=OFF" --export-compile-commands --architecture ARM64"
+        BUILD_CMD="./Tools/Scripts/build-jsc --${BUILD_TYPE} --cmakeargs="-DENABLE_UNIFIED_BUILDS=OFF" --export-compile-commands --architecture ARM64"
         BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
-        
+
         info "Building CodeQL DB for 'jsc'..."
         codeql database create "${DATABASE_DIR}" -v ${CODEQL_THREADS} ${CODEQL_RAM} --language=cpp --command="${BUILD_CMD}"
-        ${WEBKIT_SRC_DIR}/Tools/Scripts/generate-compile-commands "WebKitBuild/${BUILD_DIR}"
 
+        info "Generating compile_commands..."
+        ${WEBKIT_SRC_DIR}/Tools/Scripts/generate-compile-commands "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}"
         info "Zipping the compile_commands..."
-        zip -j "${WORK_DIR}/jsc-compile_commands-${OS_VERSION}-${BUILD_TYPE}.zip" -x "${WEBKIT_SRC_DIR}/compile_commands.json"
+        zip -j "${WORK_DIR}/jsc-compile_commands-${OS_VERSION}-${BUILD_TYPE}.zip" "${WEBKIT_SRC_DIR}/compile_commands.json"
 
         info "Deleting log files..."
         rm -rf "${DATABASE_DIR}"/log
 
         info "Zipping the CodeQL database..."
-        zip -r -X "${WORK_DIR}/jsc-codeql-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"        
-    else
-        BUILD_CMD="./Tools/Scripts/build-webkit --${BUILD_TYPE} --ios-device --no-unified-builds --export-compile-commands"
+        zip -r -X "${WORK_DIR}/jsc-codeql-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"
+    else # WEBKIT
+        DATABASE_DIR="${WORK_DIR}/webkit-codeql"
+        rm -rf "${DATABASE_DIR}"
+        BUILD_CMD="./Tools/Scripts/build-webkit --${BUILD_TYPE} --no-unified-builds --export-compile-commands"
         BUILD_DIR=$(echo "${BUILD_TYPE}" | awk '{ print toupper(substr($0, 1, 1)) tolower(substr($0, 2)) }')
-        
+
         info "Building CodeQL DB for 'webkit'..."
         codeql database create "${DATABASE_DIR}" -v ${CODEQL_THREADS} ${CODEQL_RAM} --language=cpp --command="${BUILD_CMD}"
-        ${WEBKIT_SRC_DIR}/Tools/Scripts/generate-compile-commands "WebKitBuild/${BUILD_DIR}"
 
+        info "Generating compile_commands..."
+        ${WEBKIT_SRC_DIR}/Tools/Scripts/generate-compile-commands "${WEBKIT_SRC_DIR}/WebKitBuild/${BUILD_DIR}"
         info "Zipping the compile_commands..."
-        zip -j "${WORK_DIR}/webkit-compile_commands-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" -x "${WEBKIT_SRC_DIR}/compile_commands.json"
+        zip -j "${WORK_DIR}/webkit-compile_commands-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${WEBKIT_SRC_DIR}/compile_commands.json"
 
         info "Deleting log files..."
         rm -rf "${DATABASE_DIR}"/log
 
         info "Zipping the CodeQL database..."
-        zip -r -X "${WORK_DIR}/webkit-codeql-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"        
+        zip -r -X "${WORK_DIR}/webkit-codeql-${OS_TYPE}-${OS_VERSION}-${BUILD_TYPE}.zip" "${DATABASE_DIR}"
     fi
 }
 
