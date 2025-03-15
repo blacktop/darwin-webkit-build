@@ -16,7 +16,7 @@ jobs:
     runs-on: macos-15
     strategy:
       matrix:
-        os-version: [ '18.3' ]
+        os-version: [ '18.3.2' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
 
       - name: Build WebKit CodeQL Database
         run: |
-          OS_TYPE="iOS" OS_VERSION='${{ matrix.os-version }}' CODEQL_RAM="--ram=7000" bash -x codeql.sh --jsc
+          OS_TYPE="iOS" OS_VERSION='${{ matrix.os-version }}' CODEQL_RAM='--ram=7000' bash -x codeql.sh --jsc
           echo "$(shasum -a 256 jsc-codeql-${{ matrix.os-version }}-release.zip)"
           shasum -a 256 jsc-codeql-${{ matrix.os-version }}-release.zip > jsc-codeql-${{ matrix.os-version }}-release.zip.sha256
 

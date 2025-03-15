@@ -2,7 +2,7 @@ MACOS_VERSION=sequoia-xcode
 MACOS_VM_NAME=sequoia-codeql
 
 OS_TYPE := iOS
-OS_VERSION := 18.3.1
+OS_VERSION := 18.3.2
 
 artifact_dir=artifacts/Build/binary
 
@@ -72,6 +72,7 @@ clean:
 	@echo " > Cleaning up"
 	@rm -rf ./WebKit
 	@rm -rf ./webkit-codeql
+	@rm -rf ./jsc-codeql
 	@rm -rf ./artifacts
 	@echo " 🎉 Done! 🎉"
 
