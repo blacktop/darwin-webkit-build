@@ -8,17 +8,11 @@
 
 ## Supported OS Versions
 
-### nightly
-
-| Version | Compiles | CodeQL | Binary |
-| ------- | :------: | :----: | :----: |
-| `main`  |    ✅     |   [DB](https://github.com/blacktop/darwin-webkit-build/releases/download/nightly/webkit-codeql.zip)    |   ❌    |
-
 ### macOS
 
-| Version | Compiles | CodeQL | Binary |
-| ------- | :------: | :----: | :----: |
-| 14.3    |    ❌     |   ❌    |   ❌    |
+| Version | Compiles | CodeQL | Binary | Compile Commands JSON |
+| ------- | :------: | :----: | :----: | :-------------------: |
+| 14.3    |    ❌     |   ❌    |   ❌    | ❌ |
 
 ### iOS
 
@@ -28,6 +22,13 @@
 | 18.3    |    ✅    |   [JSC](https://github.com/blacktop/darwin-webkit-build/releases/download/v18.3/jsc-codeql-18.3-release.zip)   |   ❌    | [JSON](https://github.com/blacktop/darwin-webkit-build/releases/download/v18.3/jsc-compile_commands-18.3-release.zip) |
 | 18.3.1  |    ✅    |   [JSC](https://github.com/blacktop/darwin-webkit-build/releases/download/v18.3.1/jsc-codeql-18.3.1-release.zip)   |   ❌    | [JSON](https://github.com/blacktop/darwin-webkit-build/releases/download/v18.3.1/jsc-compile_commands-18.3.1-release.zip) |
 | 18.3.2  |    ✅    |   [JSC](https://github.com/blacktop/darwin-webkit-build/releases/download/v18.3.2/jsc-codeql-18.3.2-release.zip)   |   ❌    | [JSON](https://github.com/blacktop/darwin-webkit-build/releases/download/v18.3.2/jsc-compile_commands-18.3.2-release.zip) |
+
+### nightly
+
+| Version | Compiles | CodeQL | Binary | Compile Commands JSON |
+| ------- | :------: | :----: | :----: | :-------------------: |
+| `main`  |    ✅     |   [DB](https://github.com/blacktop/darwin-webkit-build/releases/download/nightly/webkit-codeql.zip)    |   ❌    | ❌ |
+
 
 ## Getting Started
 
