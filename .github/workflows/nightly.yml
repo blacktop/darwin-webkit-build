@@ -42,7 +42,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           ls -lah
-          gh release upload v${{ matrix.os-version }} --clobber jsc-compile_commands-${{ matrix.os-version }}-release.zip
-          gh release upload v${{ matrix.os-version }} --clobber jsc-codeql-${{ matrix.os-version }}-release.zip
-          gh release upload v${{ matrix.os-version }} --clobber jsc-codeql-${{ matrix.os-version }}-release.zip.sha256
-          gh release edit v${{ matrix.os-version }} --notes "commit: \`${{ env.WEBKIT_COMMIT }}\`"
+          gh release upload nightly --clobber jsc-compile_commands-${{ matrix.os-version }}-release.zip
+          gh release upload nightly --clobber jsc-codeql-${{ matrix.os-version }}-release.zip
+          gh release upload nightly --clobber jsc-codeql-${{ matrix.os-version }}-release.zip.sha256
+          gh release edit nightly --notes "commit: \`${{ env.WEBKIT_COMMIT }}\`"
