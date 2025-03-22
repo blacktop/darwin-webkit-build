@@ -11,14 +11,21 @@
             "exact": true
         },
         {
+            "version": "17.1.2",
+            "tag": "WebKit-7616.2.9.10.13",
+            "upper": "WebKit-7616.2.9.11.1",
+            "lower": "WebKit-7616.2.9.10.5",
+            "exact": false
+        },
+        {
             "version": "17.2",
             "tag": "WebKit-7617.1.17.10.9",
             "exact": true
         },
         {
             "version": "17.2.1",
-            "tag": "WebKit-7616.2.9.10.5",
-            "exact": false
+            "tag": "WebKit-7617.1.17.10.9",
+            "exact": true
         },
         {
             "version": "17.3",
