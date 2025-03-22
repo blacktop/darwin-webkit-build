@@ -37,4 +37,8 @@ Webkit/
 # CodeQL files
 webkit-codeql/
 jsc-codeql/
+
+# Build files
 artifacts/
+*.zip
+
