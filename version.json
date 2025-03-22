@@ -1,5 +1,17 @@
 {
-    "ios": [
+    "macOS": [
+        {
+            "version": "15.2",
+            "tag": "WebKit-7620.1.16.11.8",
+            "exact": true
+        },
+        {
+            "version": "15.3",
+            "tag": "WebKit-7620.2.4.11.5",
+            "exact": true
+        }
+    ],
+    "iOS": [
         {
             "version": "17.0",
             "tag": "WebKit-7616.1.27.10.13",
