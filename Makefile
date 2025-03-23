@@ -13,11 +13,18 @@ deps:
 	brew install cirruslabs/cli/tart
 	brew install cirruslabs/cli/cirrus
 
-.PHONY: build-vm
-build-vm:
+.PHONY: build-macos-vm
+build-macos-vm:
 	@echo " > Building macOS VM"
 	@packer init -upgrade ./templates/codeql.pkr.hcl
 	@packer build -var "macos_version=$(MACOS_VERSION)" -var "macos_vm_name=$(MACOS_VM_NAME)" ./templates/codeql.pkr.hcl
+	@echo " 🎉 Done! 🎉"
+
+.PHONY: build-linux-vm
+build-linux-vm:
+	@echo " > Building macOS VM"
+	@packer init -upgrade ./templates/ubuntu.pkr.hcl
+	@packer build ./templates/ubuntu.pkr.hcl
 	@echo " 🎉 Done! 🎉"
 
 .PHONY: export-vm
@@ -36,7 +43,13 @@ codeql-db-jsc:
 codeql-db-wk:
 	@echo " > Building WebKit CodeQL Database for $(OS_TYPE) $(OS_VERSION)"
 	@OS_TYPE="$(OS_TYPE)" OS_VERSION="$(OS_VERSION)" cirrus run --verbose --output simple -e OS_TYPE -e OS_VERSION --artifacts-dir artifacts webkit
-	@echo " 🎉 Done! 🎉"	
+	@echo " 🎉 Done! 🎉"
+
+.PHONY: linux-fuzzilli
+linux-fuzzilli:
+	@echo " > Building WebKit Fuzzilli JSC for $(OS_TYPE) $(OS_VERSION)"
+	@OS_TYPE="$(OS_TYPE)" OS_VERSION="$(OS_VERSION)" cirrus run --verbose --output simple -e OS_TYPE -e OS_VERSION --artifacts-dir artifacts linux
+	@echo " 🎉 Done! 🎉"
 
 .PHONY: codeql-db
 codeql-db: codeql-db-jsc codeql-db-wk
@@ -76,4 +89,4 @@ clean:
 	@rm -rf ./artifacts
 	@echo " 🎉 Done! 🎉"
 
-.DEFAULT_GOAL := build-vm
+.DEFAULT_GOAL := build-macos-vm

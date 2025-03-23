@@ -15,3 +15,12 @@ webkit_task:
   timeout_in: 420m  # 7 hours
   binary_artifacts:
     path: webkit-*.zip
+
+linux_task:
+  name: linux
+  macos_instance:
+    image: ubuntu-24.04-codeql
+  codeql_script: OS_TYPE="${OS_TYPE}" OS_VERSION="${OS_VERSION}" CODEQL_RAM="--ram=32768" bash -x codeql.sh --jsc --fuzz
+  timeout_in: 420m  # 7 hours
+  binary_artifacts:
+    path: webkit-*.zip
