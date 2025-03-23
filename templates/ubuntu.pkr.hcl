@@ -47,7 +47,7 @@ build {
       "echo '🚀 Updating package lists...'",
       "sudo apt-get update",
       "echo 'Installing dependencies...'",
-      "sudo apt-get install -y cmake build-essential git curl unzip jq ninja-build",
+      "sudo apt-get install -y cmake build-essential git curl unzip jq ninja-build python3-full python3-pip python3-venv",
       "cmake --version",
 
       #   "echo '🚀 Installing CodeQL CLI...'",

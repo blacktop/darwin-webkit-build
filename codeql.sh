@@ -234,7 +234,7 @@ function create_db() {
     if [[ "${BUILD_TARGET}" == "jsc" ]]; then
         local build_script="${WORK_DIR}/scripts/build-jsc.sh"
         if [[ -n "${BUILD_FUZZILLI}" ]]; then
-            exec "${WORK_DIR}/scripts/build-fuzzilli.sh"
+            sudo bash "${WORK_DIR}/scripts/build-fuzzilli.sh"
         fi
         create_codeql_database "jsc" "${build_script}"
     else
