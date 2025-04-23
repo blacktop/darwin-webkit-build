@@ -88,6 +88,16 @@
             "version": "18.3.2",
             "tag": "WebKit-7620.2.4.10.8",
             "exact": true
+        },
+        {
+            "version": "18.4",
+            "tag": "WebKit-7621.1.15.10.7",
+            "exact": true
+        },
+        {
+            "version": "18.4.1",
+            "tag": "WebKit-7621.1.15.10.7",
+            "exact": true
         }
     ]
 }
