@@ -212,6 +212,7 @@ function create_codeql_database() {
     codeql database create "${database_dir}" -v ${CODEQL_THREADS} ${CODEQL_RAM} --language=cpp --command=${build_script}
 
     info "Generating compile_commands..."
+    info "${WEBKIT_SRC_DIR}/Tools/Scripts/generate-compile-commands ${WEBKIT_SRC_DIR}/WebKitBuild/${build_dir}"
     ${WEBKIT_SRC_DIR}/Tools/Scripts/generate-compile-commands "${WEBKIT_SRC_DIR}/WebKitBuild/${build_dir}"
 
     info "Zipping the compile_commands..."

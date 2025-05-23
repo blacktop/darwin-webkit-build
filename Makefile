@@ -2,7 +2,7 @@ MACOS_VERSION=sequoia-xcode
 MACOS_VM_NAME=sequoia-codeql
 
 OS_TYPE := iOS
-OS_VERSION := 18.3.2
+OS_VERSION := 18.5
 
 artifact_dir=artifacts/Build/binary
 
